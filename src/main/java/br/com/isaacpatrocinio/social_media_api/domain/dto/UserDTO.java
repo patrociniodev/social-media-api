@@ -1,29 +1,29 @@
-package br.com.isaacpatrocinio.social_media_api.domain;
+package br.com.isaacpatrocinio.social_media_api.domain.dto;
 
+import br.com.isaacpatrocinio.social_media_api.domain.User;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.io.Serial;
 import java.io.Serializable;
 import java.util.Objects;
 
-@Document(collection = "users")
-public class User implements Serializable {
+public class UserDTO implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Id
     private String id;
-
     private String name;
-
     private String email;
 
-    public User() {
+    public UserDTO(User object) {
+        this.id = object.getId();
+        this.name = object.getName();
+        this.email = object.getEmail();
     }
 
-    public User(String id, String name, String email) {
+    public UserDTO(String id, String name, String email) {
         this.id = id;
         this.name = name;
         this.email = email;
@@ -31,6 +31,10 @@ public class User implements Serializable {
 
     public String getId() {
         return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -52,12 +56,12 @@ public class User implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(id, user.id);
+        UserDTO userDTO = (UserDTO) o;
+        return Objects.equals(id, userDTO.id) && Objects.equals(name, userDTO.name) && Objects.equals(email, userDTO.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return Objects.hash(id, name, email);
     }
 }
