@@ -2,9 +2,11 @@ package br.com.isaacpatrocinio.social_media_api.services;
 
 import br.com.isaacpatrocinio.social_media_api.domain.User;
 import br.com.isaacpatrocinio.social_media_api.repositories.UserRepository;
+import br.com.isaacpatrocinio.social_media_api.services.exceptions.ObjectNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -17,5 +19,10 @@ public class UserService {
 
     public List<User> findAll() {
         return db.findAll();
+    }
+
+    public User findById(String id) {
+        Optional<User> obj = db.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found."));
     }
 }

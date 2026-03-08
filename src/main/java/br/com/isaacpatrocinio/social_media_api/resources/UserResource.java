@@ -4,6 +4,7 @@ import br.com.isaacpatrocinio.social_media_api.domain.User;
 import br.com.isaacpatrocinio.social_media_api.domain.dto.UserDTO;
 import br.com.isaacpatrocinio.social_media_api.services.UserService;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,5 +27,12 @@ public class UserResource {
         List<User> users = userService.findAll();
         List<UserDTO> usersDTO = users.stream().map(UserDTO::new).toList();
         return ResponseEntity.ok().body(usersDTO);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    public ResponseEntity<UserDTO> findById(@PathVariable String id) {
+        User user = userService.findById(id);
+        UserDTO userDTO = new UserDTO(user);
+        return ResponseEntity.ok().body(userDTO);
     }
 }
