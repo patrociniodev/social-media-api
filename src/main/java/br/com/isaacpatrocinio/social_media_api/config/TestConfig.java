@@ -12,7 +12,7 @@ import java.util.List;
 @Configuration
 public class TestConfig implements CommandLineRunner {
 
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public TestConfig(UserRepository repos) {
         userRepository = repos;
@@ -21,7 +21,11 @@ public class TestConfig implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         List<User> users = new ArrayList<>();
-        users = Arrays.asList(new User(null, "joão","joão@gmail.com"), new User(null, "maria", "maria@gmail.com"), new User(null, "cristiano", "cr7@global.com"));
+        users = Arrays.asList(
+                new User(null, "joão", "joão@gmail.com"),
+                new User(null, "maria", "maria@gmail.com"),
+                new User(null, "cristiano", "cr7@global.com")
+        );
 
         userRepository.saveAll(users);
     }

@@ -4,11 +4,10 @@ import br.com.isaacpatrocinio.social_media_api.domain.User;
 import br.com.isaacpatrocinio.social_media_api.domain.dto.UserDTO;
 import br.com.isaacpatrocinio.social_media_api.services.UserService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -22,8 +21,7 @@ public class UserResource {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity<List<UserDTO>> findAll()
-    {
+    public ResponseEntity<List<UserDTO>> findAll() {
         List<User> users = userService.findAll();
         List<UserDTO> usersDTO = users.stream().map(UserDTO::new).toList();
         return ResponseEntity.ok().body(usersDTO);
@@ -34,5 +32,16 @@ public class UserResource {
         User user = userService.findById(id);
         UserDTO userDTO = new UserDTO(user);
         return ResponseEntity.ok().body(userDTO);
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public ResponseEntity<Void> insert(@RequestBody UserDTO objDTO) {
+        User user = userService.insert(userService.fromDTO(objDTO));
+        URI uri = ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(user.getId())
+                .toUri();
+        return ResponseEntity.created(uri).build();
     }
 }
