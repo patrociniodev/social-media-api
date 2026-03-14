@@ -39,4 +39,20 @@ public class UserService {
         User obj = findById(id);
         db.delete(obj);
     }
+
+    public User update(User obj) {
+        User newObj = findById(obj.getId());
+        updateData(newObj, obj);
+
+        return db.save(newObj);
+    }
+
+    private void updateData(User entity, User obj) {
+        if (obj.getName() != null) {
+            entity.setName(obj.getName());
+        }
+        if (obj.getEmail() != null) {
+            entity.setEmail(obj.getEmail());
+        }
+    }
 }
