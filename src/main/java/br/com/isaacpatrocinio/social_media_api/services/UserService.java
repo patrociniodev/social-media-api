@@ -36,8 +36,7 @@ public class UserService {
     }
 
     public void delete(String id) {
-        User obj = findById(id);
-        db.delete(obj);
+        db.deleteById(id);
     }
 
     public User update(User obj) {
