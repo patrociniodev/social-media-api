@@ -1,5 +1,6 @@
 package br.com.isaacpatrocinio.social_media_api.config;
 
+import br.com.isaacpatrocinio.social_media_api.domain.dto.CommentDTO;
 import br.com.isaacpatrocinio.social_media_api.domain.Post;
 import br.com.isaacpatrocinio.social_media_api.domain.User;
 import br.com.isaacpatrocinio.social_media_api.domain.dto.AuthorDTO;
@@ -32,14 +33,20 @@ public class Instantiation implements CommandLineRunner {
         userRepository.deleteAll();
         postRepository.deleteAll();
 
-        User user1 = new User(null, "joão", "joão@gmail.com");
-        User user2 = new User(null, "maria", "maria@gmail.com");
-        User user3 = new User(null, "cristiano", "cr7@global.com");
+        User user1 = new User(null, "joão félix", "joãof@gmail.com");
+        User user2 = new User(null, "messi", "messi@gmail.com");
+        User user3 = new User(null, "cristiano ronaldo", "cr7@global.com");
         List<User> users = Arrays.asList(user1, user2, user3);
         userRepository.saveAll(users);
 
         Post post1 = new Post(null, sdf.parse("21/03/2018"), "Partiu viagem", "Vou viajar para São Paulo. Abraços!", new AuthorDTO(user1));
+        post1.getComments().addAll(Arrays.asList(
+                new CommentDTO("Boa viagem mano!", sdf.parse("21/03/2018"), new AuthorDTO(user3)),
+                new CommentDTO("Aproveite!", sdf.parse("22/03/2018"), new AuthorDTO(user2))
+        ));
         Post post2 = new Post(null, sdf.parse("23/03/2018"), "Bom dia", "Acordei feliz hoje!", new AuthorDTO(user1));
+        post2.getComments().add(new CommentDTO("Tenha um ótimo dia!", sdf.parse("23/03/2018"), new AuthorDTO(user3)));
+
         List<Post> posts = Arrays.asList(post1, post2);
         postRepository.saveAll(posts);
 
