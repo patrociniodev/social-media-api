@@ -1,5 +1,6 @@
 package br.com.isaacpatrocinio.social_media_api.resources;
 
+import br.com.isaacpatrocinio.social_media_api.domain.Post;
 import br.com.isaacpatrocinio.social_media_api.domain.User;
 import br.com.isaacpatrocinio.social_media_api.domain.dto.UserDTO;
 import br.com.isaacpatrocinio.social_media_api.services.UserService;
@@ -58,6 +59,12 @@ public class UserResource {
         user = userService.update(user);
 
         return ResponseEntity.noContent().build();
+    }
+
+    @RequestMapping(value = "/{id}/posts", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> findAllPosts(@PathVariable String id) {
+        List<Post> posts = userService.findById(id).getPosts();
+        return ResponseEntity.ok().body(posts);
     }
 
 }
