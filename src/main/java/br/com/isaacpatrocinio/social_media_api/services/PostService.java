@@ -1,0 +1,28 @@
+package br.com.isaacpatrocinio.social_media_api.services;
+
+import br.com.isaacpatrocinio.social_media_api.domain.Post;
+import br.com.isaacpatrocinio.social_media_api.repositories.PostRepository;
+import br.com.isaacpatrocinio.social_media_api.services.exceptions.ObjectNotFoundException;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+
+@Service
+public class PostService {
+
+    private final PostRepository db;
+
+    public PostService(PostRepository postRepository) {
+        db = postRepository;
+    }
+
+    public List<Post> findAll() {
+        return db.findAll();
+    }
+
+    public Post findById(String id) {
+        Optional<Post> obj = db.findById(id);
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found."));
+    }
+}
