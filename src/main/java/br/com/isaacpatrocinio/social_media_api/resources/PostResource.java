@@ -6,6 +6,8 @@ import br.com.isaacpatrocinio.social_media_api.services.PostService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -36,6 +38,20 @@ public class PostResource {
     ) {
         String decodedText = URL.decodeParam(url);
         List<Post> postList = postService.findByTitle(decodedText);
+        return ResponseEntity.ok().body(postList);
+    }
+
+    @RequestMapping(value = "/fullsearch", method = RequestMethod.GET)
+    public ResponseEntity<List<Post>> fullSearch(
+            @RequestParam(value = "text", defaultValue = "") String urlText,
+            @RequestParam(value = "minDate", defaultValue = "") String minDate,
+            @RequestParam(value = "maxDate", defaultValue = "") String maxDate
+    ) {
+        String decodedText = URL.decodeParam(urlText);
+        Date convertedMinDate = URL.convertDate(minDate, new Date(0L));
+        Date convertedMaxDate = URL.convertDate(maxDate, new Date());
+        List<Post> postList = postService.fullSearch(decodedText, convertedMinDate, convertedMaxDate);
+
         return ResponseEntity.ok().body(postList);
     }
 }
