@@ -25,4 +25,8 @@ public class PostService {
         Optional<Post> obj = db.findById(id);
         return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found."));
     }
+
+    public List<Post> findByTitle(String title) {
+        return db.findByTitleContainingIgnoreCase(title);
+    }
 }
